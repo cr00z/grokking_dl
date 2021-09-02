@@ -23,3 +23,7 @@ nfans = [1.2, 1.3, 0.5, 1.0]
 input_data = [toes[0], wlrec[0], nfans[0]]
 pred = neural_network(input_data, WEIGHTS)
 print(pred)
+
+
+import numpy as np
+print([np.array(input_data).dot(weight) for weight in np.array(WEIGHTS)])
