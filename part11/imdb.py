@@ -85,3 +85,22 @@ for iter in range(ITERATIONS):
 
     print("Iter: {}, train: {}, test: {}"
           .format(iter, correct / total, test_correct / test_total))
+
+# SECTION 3: Word Embeddings
+
+from collections import Counter
+import math
+
+
+def similar(target='beautiful'):
+    scores = Counter()
+    target_index = word2index[target.upper()]
+    for word, index in word2index.items():
+        raw_difference = weights_0_1[index] - weights_0_1[target_index]
+        squared_difference = raw_difference * raw_difference
+        scores[word] = -math.sqrt(sum(squared_difference))
+    return scores.most_common(10)
+
+
+print(similar('beautiful'))
+print(similar('terrible'))
