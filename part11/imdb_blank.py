@@ -81,5 +81,32 @@ def similar(target='beautiful'):
     return scores.most_common(10)
 
 
-print(similar('beautiful'))
-print(similar('terrible'))
+#print(similar('beautiful'))
+#print(similar('terrible'))
+
+
+# SECTION 4: Analogy
+
+def analogy(positive=['terrible', 'good'], negative=['bad']):
+    norms = np.sum(weights_0_1 * weights_0_1, axis=1)
+    norms.resize(norms.shape[0], 1)
+
+    normed_weights = weights_0_1 * norms
+
+    query_vect = np.zeros(len(weights_0_1[0]))
+    for word in positive:
+        query_vect += normed_weights[word2index[word.upper()]]
+    for word in negative:
+        query_vect -= normed_weights[word2index[word.upper()]]
+
+    scores = Counter()
+    for word, index in word2index.items():
+        raw_difference = weights_0_1[index] - query_vect
+        squared_difference = raw_difference * raw_difference
+        scores[word] = -math.sqrt(sum(squared_difference))
+
+    return scores.most_common(10)[1:]
+
+
+print(analogy(['terrible', 'good'], ['bad']))
+print(analogy(['elizabeth', 'he'], ['she']))
